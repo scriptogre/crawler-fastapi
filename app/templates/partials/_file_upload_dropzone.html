@@ -1,0 +1,11 @@
+<label id="file-upload-dropzone" class="dropzone">
+
+    <span id="dropzone-label" class="text-2xl me-3">
+        Press here to upload
+    </span>
+
+    {% include 'icons/upload.html' %}
+    <input id="dropzone-input"
+           hx-post="/upload_new_file" hx-encoding="multipart/form-data" hx-target="#table-container"
+           type="file" name="file" class="hidden" accept=".csv"/>
+</label>

@@ -1,0 +1,39 @@
+{% macro collapsible_row(website, status=False) %}
+    <div class="collapse collapse-arrow join-item border border-base-300">
+        <input type="radio" name="my-accordion-4" />
+        <div class="collapse-title text-xl font-light">
+            {{ website }}
+            {% if status == "in_progress" %}
+                <span class="loading loading-dots loading-md float-right"></span>
+            {% elif status == "clean" %}
+                <span class="badge badge-outline badge-success float-right">Clean</span>
+            {% elif status == "suspicious" %}
+                <span class="badge badge-outline badge-error float-right">Infected</span>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro table_row(data) %}
+    <tr>
+        <td class="text-center">{{ data.starting_url }}</td>
+        <td class="text-center">{{ data.sublinks_found|default(0, true) }}</td>
+        <td class="text-center">{{ data.suspect_links_found|default(0, true) }}</td>
+        <td>{% include 'icons/question.html' %}</td>
+    </tr>
+{% endmacro %}
+
+{% macro alert(text, type) %}
+    <div class="alert alert-{{ type }}">
+        {% if type == 'info' %}
+            {% include 'icons/alert_info.html' %}
+        {% elif type == 'success' %}
+            {% include 'icons/alert_success.html' %}
+        {% elif type == 'warning' %}
+            {% include 'icons/alert_warning.html' %}
+        {% elif type == 'danger' %}
+            {% include 'icons/alert_danger.html' %}
+        {% endif %}
+        <span>{{ text }}</span>
+    </div>
+{% endmacro %}

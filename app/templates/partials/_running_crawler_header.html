@@ -1,0 +1,9 @@
+<form hx-post="/start" hx-target="this" hx-swap="outerHTML" id="stop-form">
+    <progress class="progress w-2/3 sm:w-1/3 lg:w-1/4 mx-auto"></progress>
+
+    <!-- Stop Button -->
+    <button id="stop-button" type="submit" class="btn btn-warning">
+        Stop Web Crawling
+        {% include 'icons/crawler.html' %}
+    </button>
+</form>

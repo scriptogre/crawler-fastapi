@@ -1,0 +1,17 @@
+<table id="table-results" class="table table-zebra w-full overflow-x-auto">
+    <thead>
+    <tr>
+        <th class="text-center">Website</th>
+        <th class="text-center">Links</th>
+        <th class="text-center">Suspicious</th>
+        <th class="text-center">Status</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% from 'partials/macros.html' import table_row %}
+    {% for url_data in rows %}
+        {{ table_row(url_data) }}
+    {% endfor %}
+    </tbody>
+</table>

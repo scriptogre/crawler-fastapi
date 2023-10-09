@@ -1,0 +1,11 @@
+fastapi
+pydantic
+uvicorn
+python-multipart
+scrapy
+jinja2
+jinja-partials
+sqlalchemy
+alembic
+databases
+aiosqlite

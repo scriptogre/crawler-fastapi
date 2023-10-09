@@ -1,0 +1,130 @@
+{% import 'partials/macros.html' as macros %}
+
+<!DOCTYPE html>
+<html data-theme="light" class="bg-base-300">
+
+<head>
+    <title>Web Scraper</title>
+
+    <!-- Tailwind CSS -->
+    <link href="/static/css/styles.min.css" rel="stylesheet">
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+
+    <!-- _hyperscript -->
+    <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
+</head>
+
+<body class="bg-base-300">
+
+{% block toasts %}
+    <!-- Toasts -->
+    <div id="toasts" class="toast toast-top toast-start z-50" style="z-index:9999" _="on mutation wait 1.5s then transition my opacity to 0% over 1s then remove my.children">
+
+        {% for message in messages %}
+            {{ macros.alert(message.text, message.type) }}
+        {% endfor %}
+
+    </div>
+{% endblock %}
+
+{% block main_container %}
+    <div id="main-container" class="container m-auto px-4 py-8 flex flex-col items-center max-w-7xl h-screen">
+
+        <div id="theme-toggle-container" class="fixed top-4 right-4">
+            <input id="theme-toggle" class="toggle lg:toggle-md" onchange="themeToggle()" type="checkbox" checked />
+        </div>
+
+        <div id="title-and-stats-container" class="text-center space-y-8 my-8">
+
+            <h1 id="title" class="text-xl lg:text-2xl xl:text-3xl font-bold">
+                Intelligent Web Crawler
+            </h1>
+
+            <div id="stats" class="stats shadow">
+                <div id="stat-websites" class="stat">
+                    <div id="stat-websites-icon" class="stat-figure">{% include 'icons/globe.html' %}</div>
+                    <div id="stat-websites-label" class="stat-title hidden sm:block">Websites</div>
+                    <div id="stat-websites-value" class="stat-value max-lg:text-xl">0</div>
+                </div>
+
+                <div id="stat-links" class="stat">
+                    <div id="stat-links-icon" class="stat-figure">{% include 'icons/link.html' %}</div>
+                    <div id="stat-links-label" class="stat-title hidden sm:block">Links</div>
+                    <div id="stat-links-value" class="stat-value max-lg:text-xl">0</div>
+                </div>
+
+                <div id="stat-sus-links" class="stat">
+                    <div id="stat-sus-links-icon" class="stat-figure text-secondary">{% include 'icons/alert_warning.html' %}</div>
+                    <div id="stat-sus-links-label" class="stat-title hidden sm:block">Suspicious</div>
+                    <div id="stat-sus-links-value" class="stat-value text max-lg:text-xl">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="main-card" class="card bg-base-100 shadow mx-auto w-full flex-grow 2xl:w-11/12 mb-8">
+
+            <div id="main-card-body" class="card-body py-8">
+
+                <div id="table-header" class="flex flex-col sm:flex-row justify-between items-center mb-4">
+
+                    {% if rows %}
+                        <div id="reset-warning-tooltip" class="tooltip max-sm:w-full" data-tip="Resets existing progress">
+
+                            <label for="upload-new-file" class="btn max-sm:mb-3 max-sm:w-full">
+                                <input id="upload-new-file" class="hidden"
+                                       hx-post="/upload_new_file" hx-encoding="multipart/form-data" hx-target="#table-container"
+                                       type="file" name="file" accept=".csv"/>
+                                Upload New File {% include 'icons/upload.html' %}
+                            </label>
+
+                        </div>
+                    {% endif %}
+
+                    <form id="start-form" hx-post="/start_crawler" hx-target="this" hx-swap="outerHTML" class="items-center">
+                        <input id="keywords-input" name="keywords" class="input input-bordered max-sm:mb-3 max-sm:w-full" type="text" placeholder="Enter suspicious words">
+                        <button id="start-form-button" type="submit" class="btn btn-primary max-sm:w-full">
+                            Start Web Crawling {% include 'icons/crawler.html' %}
+                        </button>
+                    </form>
+
+                </div>
+
+                <div id="table-container" class="overflow-y-auto h-full">
+
+                    {% if rows %}
+
+                        {% include 'partials/_table_results.html' %}
+
+                    {% else %}
+
+                        {% include 'partials/_file_upload_dropzone.html' %}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block additional_js %}
+    <script>
+        function themeToggle() {
+            const htmlTag = document.getElementsByTagName('html')[0];
+
+            if (htmlTag.getAttribute('data-theme') === 'light') {
+                htmlTag.setAttribute('data-theme', 'dark');
+            } else {
+                htmlTag.setAttribute('data-theme', 'light');
+            }
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .dropzone {
+        @apply min-h-full h-full flex justify-center items-center cursor-pointer border-2 border-dashed rounded-md
+    }
+}
